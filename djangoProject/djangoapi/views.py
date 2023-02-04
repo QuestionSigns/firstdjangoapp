@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import Post
+from django.http import HttpResponse
+import datetime
+
 
 # Create your views here.
 def posts(request):
@@ -9,7 +12,6 @@ def posts(request):
     for post in posts: 
         response.append(
             {
-
                 'author': f"{post.user.first_name} {post.user.last_name}" ,
                 'title': post.title,
                 'text': post.text,
@@ -18,3 +20,12 @@ def posts(request):
         )
 
     return JsonResponse(response, safe=False)
+
+#Metodo non funzionante
+def hello_world(request):
+    return render(request, 'djangoapi/post_list.html', {})
+
+def current_datetime(request):
+    now = datetime.datetime.now()
+    html = "<html><body>It is now %s.</body></html>" % now
+    return HttpResponse(html)
