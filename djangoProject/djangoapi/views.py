@@ -1,7 +1,7 @@
+from django.http import JsonResponse, HttpResponse
+from django.utils import timezone
 from django.shortcuts import render
-from django.http import JsonResponse
 from .models import Post
-from django.http import HttpResponse
 import datetime
 
 
@@ -23,7 +23,8 @@ def posts(request):
 
 #Metodo non funzionante
 def hello_world(request):
-    return render(request, 'djangoapi/post_list.html', {})
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    return render(request, 'djangoapi/post_list.html', {'posts': posts})
 
 def current_datetime(request):
     now = datetime.datetime.now()
