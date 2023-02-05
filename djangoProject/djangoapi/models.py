@@ -18,5 +18,4 @@ class Post(models.Model):
         self.save()
 
     def __str__(self): #Doppi _ prima e dopo il nome del metodo sono chiamati 'dunder'
-        
         return self.title

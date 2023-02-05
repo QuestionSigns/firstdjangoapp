@@ -1,6 +1,6 @@
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Post
 import datetime
 
@@ -29,3 +29,7 @@ def current_datetime(request):
     now = datetime.datetime.now()
     html = "<html><body>It is now %s.</body></html>" % now
     return HttpResponse(html)
+
+def post_detail(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'djangoapi/post_detail.html', {'post': post})

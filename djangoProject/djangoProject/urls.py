@@ -21,5 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('posts/', views.hello_world),
     path('postJson/', views.posts),
+    path('post/<int:pk>/', views.post_detail, name='post_detail'), #Indicare una risorsa specifica pk (intera), definita nella views
     path('time/', views.current_datetime)
 ]
