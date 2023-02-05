@@ -19,8 +19,10 @@ from djangoapi import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('posts/', views.hello_world),
-    path('postJson/', views.posts),
+    path('postsJson/', views.posts),
+    path('', views.post_list),
     path('post/<int:pk>/', views.post_detail, name='post_detail'), #Indicare una risorsa specifica pk (intera), definita nella views
+    path('post/new/', views.post_new, name='post_new'),
+     path('post/<int:pk>/edit/', views.post_edit, name='post_edit'),
     path('time/', views.current_datetime)
 ]
