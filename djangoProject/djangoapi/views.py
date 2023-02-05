@@ -21,7 +21,6 @@ def posts(request):
 
     return JsonResponse(response, safe=False)
 
-#Metodo non funzionante
 def hello_world(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
     return render(request, 'djangoapi/post_list.html', {'posts': posts})
