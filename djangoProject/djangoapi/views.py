@@ -13,12 +13,15 @@ def posts(request):
     response = []
     posts = Post.objects.filter().order_by('-created_date')
     for post in posts: 
+        post.writeOnChain()
         response.append(
             {
                 'author': f"{post.user.first_name} {post.user.last_name}" ,
                 'title': post.title,
                 'text': post.text,
                 'publishing_date': post.published_date,
+                'hash' : post.hash,
+                'txId' : post.txId
             }
         )
 
@@ -31,6 +34,12 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    if post.txId == None:
+        try:
+            post.writeOnChain("writing hash for:" + post.title)
+        except:
+            print("Impossibile salvare i dati on chain per il post: " + post.title + " - fondi insufficienti")
+
     return render(request, 'djangoapi/post_detail.html', {'post': post})
 
 def post_new(request):

@@ -24,6 +24,7 @@ class Post(models.Model):
     def __str__(self): #Doppi _ prima e dopo il nome del metodo sono chiamati 'dunder'
         return self.title
     
-    def writeOnChain(self):
+    def writeOnChain(self, message):
+        self.content = message
         self.hash = hashlib.sha256(self.content.encode('utf-8')).hexdigest()
         self.txId = sendTransaction(self.hash)
