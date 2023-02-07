@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
+from djangoapi.utils import sendTransaction
+import hashlib
 
 # Create your models here.
 class Post(models.Model):
@@ -12,6 +14,8 @@ class Post(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now())
     published_date = models.DateTimeField(blank=True, null=True)
+    hash = models.CharField(max_length=32, default=None, null=True)
+    txId = models.CharField(max_length=66, default=None, null=True)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -19,3 +23,7 @@ class Post(models.Model):
 
     def __str__(self): #Doppi _ prima e dopo il nome del metodo sono chiamati 'dunder'
         return self.title
+    
+    def writeOnChain(self):
+        self.hash = hashlib.sha256(self.content.encode('utf-8')).hexdigest()
+        self.txId = sendTransaction(self.hash)
