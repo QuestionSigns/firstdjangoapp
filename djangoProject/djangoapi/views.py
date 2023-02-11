@@ -1,6 +1,7 @@
 from django.http import JsonResponse, HttpResponse
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
+from django.template import loader
 from .models import Post
 from .forms import PostForm
 from django.contrib.auth.models import User
@@ -29,7 +30,7 @@ def posts(request):
 
 def post_list(request):
     posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
-    return render(request, 'djangoapi/post_list.html', {'posts': posts})
+    return render(request, 'post_list.html', {'posts': posts})
 
 
 def post_detail(request, pk):
@@ -40,7 +41,7 @@ def post_detail(request, pk):
         except:
             print("Impossibile salvare i dati on chain per il post: " + post.title + " - fondi insufficienti")
 
-    return render(request, 'djangoapi/post_detail.html', {'post': post})
+    return render(request, 'post_detail.html', {'post': post})
 
 def post_new(request):
     if request.method == "POST":
@@ -55,7 +56,7 @@ def post_new(request):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
-    return render(request, 'djangoapi/post_edit.html', {'form': form})
+    return render(request, 'post_edit.html', {'form': form})
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
@@ -69,9 +70,13 @@ def post_edit(request, pk):
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm(instance=post)
-    return render(request, 'djangoapi/post_edit.html', {'form': form})
+    return render(request, 'post_edit.html', {'form': form})
 
 def current_datetime(request):
     now = datetime.datetime.now()
     html = "<html><body>It is now %s.</body></html>" % now
     return HttpResponse(html)
+
+def hello_world(request):
+    template = loader.get_template('hello_world.html')
+    return HttpResponse(template.render())
